@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.0.1/chartjs-plugin-zoom.min.js"></script>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tema 1 - Metrics</title>
+</head>
+
+<body>
+  <h1>Latency of all 4 requestss</h1>
+  <div><canvas id="myChart" style="width:100%;max-width:600px"></canvas></div>
+
+  <script>
+    let getData = async () => {
+      const response = await fetch("/metrics/data");
+      const data = await response.json();
+      const maxVal = data[0].length;
+      let xValues = [];
+      for (let i = 1; i <= maxVal; ++i) {
+        xValues.push(i);
+      }
+      new Chart("myChart", {
+        type: "line",
+        data: {
+          labels: xValues,
+          datasets: [
+            {
+              label: "Img Api",
+              fill: false,
+              lineTension: 0,
+              backgroundColor: "rgba(0,0,255,1.0)",
+              borderColor: "rgba(0,0,255,0.7)",
+              data: data[0],
+            },
+            {
+              label: "Quote Api",
+              fill: false,
+              lineTension: 0,
+              backgroundColor: "rgba(255,0,0,1.0)",
+              borderColor: "rgba(255,0,0,0.7)",
+              data: data[1],
+            },
+            {
+              label: "Meme Api Post",
+              fill: false,
+              lineTension: 0,
+              backgroundColor: "rgba(0,255,0,1.0)",
+              borderColor: "rgba(0,255,0,0.7)",
+              data: data[2],
+            },
+            {
+              label: "Meme Api Get",
+              fill: false,
+              lineTension: 0,
+              backgroundColor: "rgba(255,0,255,1.0)",
+              borderColor: "rgba(255,0,255,0.7)",
+              data: data[3],
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: "rgb(255, 99, 132)",
+              },
+            },
+          },
+          scales: {
+            yAxes: [{ ticks: { min: 0, max: 10000 } }],
+          },
+        },
+        plugins: {
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: "xy",
+            },
+            zoom: {
+              enabled: true,
+              mode: "xy",
+            },
+          },
+        },
+      });
+    };
+    getData();
+  </script>
+</body>
+
+</html>
