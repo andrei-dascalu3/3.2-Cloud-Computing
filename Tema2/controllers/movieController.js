@@ -15,12 +15,12 @@ module.exports = class MovieController {
       where: {},
     });
     if (data.length > 0) {
-      this.res.writeHeader(200, { "Content-Type": "text/html" });
+      this.res.writeHeader(200, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     } else {
       let data = { message: "Page index out of bound!" };
-      this.res.writeHeader(404, { "Content-Type": "text/html" });
+      this.res.writeHeader(404, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     }
@@ -31,12 +31,12 @@ module.exports = class MovieController {
       where: { id: uid },
     });
     if (data.length === 1) {
-      this.res.writeHeader(200, { "Content-Type": "text/html" });
+      this.res.writeHeader(200, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data[0]));
       this.res.end();
     } else {
       let data = { message: "Movie not found!" };
-      this.res.writeHeader(404, { "Content-Type": "text/html" });
+      this.res.writeHeader(404, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     }
@@ -53,11 +53,11 @@ module.exports = class MovieController {
         director: movie.director,
         country: movie.country,
       });
-      this.res.writeHeader(201, { "Content-Type": "text/html" });
+      this.res.writeHeader(201, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     } catch (error) {
-      this.res.writeHeader(409, { "Content-Type": "text/html" });
+      this.res.writeHeader(409, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(error));
       this.res.end();
     }
@@ -95,11 +95,11 @@ module.exports = class MovieController {
         });
       });
       let data = { message: "Movies added." };
-      this.res.writeHeader(201, { "Content-Type": "text/html" });
+      this.res.writeHeader(201, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     } else {
-      this.res.writeHeader(409, { "Content-Type": "text/html" });
+      this.res.writeHeader(409, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(res));
       this.res.end();
     }
@@ -111,7 +111,7 @@ module.exports = class MovieController {
     });
     if (data.length === 0) {
       let res = { message: "All movies deleted", number_deleted: data.length };
-      this.res.writeHeader(204, { "Content-Type": "text/html" });
+      this.res.writeHeader(204, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(res));
       this.res.end();
     } else {
@@ -120,7 +120,7 @@ module.exports = class MovieController {
         truncate: true,
       });
       let res = { message: "All movies deleted", number_deleted: data.length };
-      this.res.writeHeader(200, { "Content-Type": "text/html" });
+      this.res.writeHeader(200, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(res));
       this.res.end();
     }
@@ -135,13 +135,13 @@ module.exports = class MovieController {
       await Movie.destroy({
         where: { id: uid },
       });
-      this.res.writeHeader(200, { "Content-Type": "text/html" });
+      this.res.writeHeader(200, { "Content-Type": "application/json" });
       res.push(data[0]);
       this.res.write(JSON.stringify(res));
       this.res.end();
     } else {
       let data = { message: "Movie not found!" };
-      this.res.writeHeader(404, { "Content-Type": "text/html" });
+      this.res.writeHeader(404, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     }
@@ -165,12 +165,12 @@ module.exports = class MovieController {
         });
       });
       let data = { message: "All collection updated." };
-      this.res.writeHeader(201, { "Content-Type": "text/html" });
+      this.res.writeHeader(201, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     } catch (error) {
       let data = { message: "Error at collection update!" };
-      this.res.writeHeader(500, { "Content-Type": "text/html" });
+      this.res.writeHeader(500, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     }
@@ -183,7 +183,7 @@ module.exports = class MovieController {
       if (data.length === 0) {
         let result = [{ message: "Movie id does not exist!" }];
         result.push(movie);
-        this.res.writeHeader(200, { "Content-Type": "text/html" });
+        this.res.writeHeader(200, { "Content-Type": "application/json" });
         this.res.write(JSON.stringify(result));
         this.res.end();
       } else {
@@ -201,12 +201,12 @@ module.exports = class MovieController {
         );
         let result = [{ message: "Movie updated" }];
         result.push(movie);
-        this.res.writeHeader(200, { "Content-Type": "text/html" });
+        this.res.writeHeader(200, { "Content-Type": "application/json" });
         this.res.write(JSON.stringify(result));
         this.res.end();
       }
     } catch (error) {
-      this.res.writeHeader(500, { "Content-Type": "text/html" });
+      this.res.writeHeader(500, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(error));
       this.res.end();
     }
@@ -221,7 +221,7 @@ module.exports = class MovieController {
         if (!isNaN(page)) {
           this.getMovies(page);
         } else {
-          this.res.writeHeader(404, { "Content-Type": "text/html" });
+          this.res.writeHeader(404, { "Content-Type": "application/json" });
           this.res.end();
         }
       } else if (tokens.length === 4 && tokens[2] === "movie") {
@@ -229,11 +229,11 @@ module.exports = class MovieController {
         if (!isNaN(uid)) {
           this.getMovie(uid);
         } else {
-          this.res.writeHeader(404, { "Content-Type": "text/html" });
+          this.res.writeHeader(404, { "Content-Type": "application/json" });
           this.res.end();
         }
       } else {
-        this.res.writeHeader(404, { "Content-Type": "text/html" });
+        this.res.writeHeader(404, { "Content-Type": "application/json" });
         this.res.end();
       }
     }
@@ -244,7 +244,7 @@ module.exports = class MovieController {
       } else if (tokens.length === 3 && tokens[2] === "movie") {
         this.createMovie();
       } else {
-        this.res.writeHeader(404, { "Content-Type": "text/html" });
+        this.res.writeHeader(404, { "Content-Type": "application/json" });
         this.res.end();
       }
     }
@@ -255,7 +255,7 @@ module.exports = class MovieController {
       } else if (tokens.length === 3 && tokens[2] === "movie") {
         this.updateMovie();
       } else {
-        this.res.writeHeader(404, { "Content-Type": "text/html" });
+        this.res.writeHeader(404, { "Content-Type": "application/json" });
         this.res.end();
       }
     }
@@ -268,16 +268,16 @@ module.exports = class MovieController {
         if (!isNaN(uid)) {
           this.deleteMovie(uid);
         } else {
-          this.res.writeHeader(404, { "Content-Type": "text/html" });
+          this.res.writeHeader(404, { "Content-Type": "application/json" });
           this.res.end();
         }
       } else {
-        this.res.writeHeader(404, { "Content-Type": "text/html" });
+        this.res.writeHeader(404, { "Content-Type": "application/json" });
         this.res.end();
       }
     }
     else{
-      this.res.writeHeader(405, { "Content-Type": "text/html" });
+      this.res.writeHeader(405, { "Content-Type": "application/json" });
       this.res.end();
     }
   }
