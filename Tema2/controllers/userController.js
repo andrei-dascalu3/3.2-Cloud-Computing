@@ -1,5 +1,6 @@
 const User = require("../models/user");
 
+
 module.exports = class UserController {
   constructor(req, res, body) {
     this.req = req;
@@ -15,12 +16,12 @@ module.exports = class UserController {
       where: {},
     });
     if (data.length > 0) {
-      this.res.writeHeader(200, { "Content-Type": "text/html" });
+      this.res.writeHeader(200, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     } else {
       let data = { message: "Page index out of bound!" };
-      this.res.writeHeader(404, { "Content-Type": "text/html" });
+      this.res.writeHeader(404, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     }
@@ -31,12 +32,12 @@ module.exports = class UserController {
       where: { id: uid },
     });
     if (data.length === 1) {
-      this.res.writeHeader(200, { "Content-Type": "text/html" });
+      this.res.writeHeader(200, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data[0]));
       this.res.end();
     } else {
       let data = { message: "User not found!" };
-      this.res.writeHeader(404, { "Content-Type": "text/html" });
+      this.res.writeHeader(404, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     }
@@ -51,11 +52,11 @@ module.exports = class UserController {
         email: user.email,
         age: user.age,
       });
-      this.res.writeHeader(201, { "Content-Type": "text/html" });
+      this.res.writeHeader(201, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     } catch (error) {
-      this.res.writeHeader(409, { "Content-Type": "text/html" });
+      this.res.writeHeader(409, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(error));
       this.res.end();
     }
@@ -89,11 +90,11 @@ module.exports = class UserController {
         });
       });
       let data = { message: "Users added." };
-      this.res.writeHeader(201, { "Content-Type": "text/html" });
+      this.res.writeHeader(201, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     } else {
-      this.res.writeHeader(409, { "Content-Type": "text/html" });
+      this.res.writeHeader(409, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(res));
       this.res.end();
     }
@@ -105,7 +106,7 @@ module.exports = class UserController {
     });
     if (data.length === 0) {
       let res = { message: "All users deleted", number_deleted: data.length };
-      this.res.writeHeader(204, { "Content-Type": "text/html" });
+      this.res.writeHeader(204, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(res));
       this.res.end();
     } else {
@@ -114,7 +115,7 @@ module.exports = class UserController {
         truncate: true,
       });
       let res = { message: "All users deleted", number_deleted: data.length };
-      this.res.writeHeader(200, { "Content-Type": "text/html" });
+      this.res.writeHeader(200, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(res));
       this.res.end();
     }
@@ -129,13 +130,13 @@ module.exports = class UserController {
       await User.destroy({
         where: { id: uid },
       });
-      this.res.writeHeader(200, { "Content-Type": "text/html" });
+      this.res.writeHeader(200, { "Content-Type": "application/json" });
       res.push(data[0]);
       this.res.write(JSON.stringify(res));
       this.res.end();
     } else {
       let data = { message: "User not found!" };
-      this.res.writeHeader(404, { "Content-Type": "text/html" });
+      this.res.writeHeader(404, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     }
@@ -157,12 +158,12 @@ module.exports = class UserController {
         });
       });
       let data = { message: "All collection updated." };
-      this.res.writeHeader(201, { "Content-Type": "text/html" });
+      this.res.writeHeader(201, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     } catch (error) {
       let data = { message: "Error at collection update!" };
-      this.res.writeHeader(500, { "Content-Type": "text/html" });
+      this.res.writeHeader(500, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(data));
       this.res.end();
     }
@@ -175,7 +176,7 @@ module.exports = class UserController {
       if (data.length === 0) {
         let result = [{ message: "User id does not exist!" }];
         result.push(user);
-        this.res.writeHeader(200, { "Content-Type": "text/html" });
+        this.res.writeHeader(200, { "Content-Type": "application/json" });
         this.res.write(JSON.stringify(result));
         this.res.end();
       } else {
@@ -191,12 +192,12 @@ module.exports = class UserController {
         );
         let result = [{ message: "User updated" }];
         result.push(user);
-        this.res.writeHeader(200, { "Content-Type": "text/html" });
+        this.res.writeHeader(200, { "Content-Type": "application/json" });
         this.res.write(JSON.stringify(result));
         this.res.end();
       }
     } catch (error) {
-      this.res.writeHeader(500, { "Content-Type": "text/html" });
+      this.res.writeHeader(500, { "Content-Type": "application/json" });
       this.res.write(JSON.stringify(error));
       this.res.end();
     }
@@ -211,7 +212,7 @@ module.exports = class UserController {
         if (!isNaN(page)) {
           this.getUsers(page);
         } else {
-          this.res.writeHeader(404, { "Content-Type": "text/html" });
+          this.res.writeHeader(404, { "Content-Type": "application/json" });
           this.res.end();
         }
       } else if (tokens.length === 4 && tokens[2] === "user") {
@@ -219,11 +220,11 @@ module.exports = class UserController {
         if (!isNaN(uid)) {
           this.getUser(uid);
         } else {
-          this.res.writeHeader(404, { "Content-Type": "text/html" });
+          this.res.writeHeader(404, { "Content-Type": "application/json" });
           this.res.end();
         }
       } else {
-        this.res.writeHeader(404, { "Content-Type": "text/html" });
+        this.res.writeHeader(404, { "Content-Type": "application/json" });
         this.res.end();
       }
     }
@@ -234,7 +235,7 @@ module.exports = class UserController {
       } else if (tokens.length === 3 && tokens[2] === "user") {
         this.createUser();
       } else {
-        this.res.writeHeader(404, { "Content-Type": "text/html" });
+        this.res.writeHeader(404, { "Content-Type": "application/json" });
         this.res.end();
       }
     }
@@ -245,7 +246,7 @@ module.exports = class UserController {
       } else if (tokens.length === 3 && tokens[2] === "user") {
         this.updateUser();
       } else {
-        this.res.writeHeader(404, { "Content-Type": "text/html" });
+        this.res.writeHeader(404, { "Content-Type": "application/json" });
         this.res.end();
       }
     }
@@ -258,13 +259,17 @@ module.exports = class UserController {
         if (!isNaN(uid)) {
           this.deleteUser(uid);
         } else {
-          this.res.writeHeader(404, { "Content-Type": "text/html" });
+          this.res.writeHeader(404, { "Content-Type": "application/json" });
           this.res.end();
         }
       } else {
-        this.res.writeHeader(404, { "Content-Type": "text/html" });
+        this.res.writeHeader(404, { "Content-Type": "application/json" });
         this.res.end();
       }
+    }
+    else{
+      this.res.writeHeader(405, { "Content-Type": "application/json" });
+      this.res.end();
     }
   }
 };
